@@ -19,9 +19,6 @@ public class Main {
 
     public static void main(String... args) throws IOException {
         MainFrame.newInstance(uiReady);
-//        PokemonSave save = PokemonSave.from("saves/pokemon.sav");
-//        Team team = new SaveReaderFactory(new TextReader(), new SpeciesToPokedex()).playerTeam().read(save);
-//        System.out.println(team);
     }
 
     private static final UiReadyListener uiReady = new UiReadyListener() {
