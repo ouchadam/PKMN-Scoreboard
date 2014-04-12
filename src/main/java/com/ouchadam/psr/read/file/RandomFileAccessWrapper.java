@@ -1,20 +1,14 @@
-package com.ouchadam.psr.read;
+package com.ouchadam.psr.read.file;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class PokemonSave {
+public class RandomFileAccessWrapper {
 
     private final RandomAccessFile file;
 
-    public PokemonSave(RandomAccessFile file) {
+    RandomFileAccessWrapper(RandomAccessFile file) {
         this.file = file;
-    }
-
-    public static PokemonSave from(String filename) throws FileNotFoundException {
-        return new PokemonSave(new RandomAccessFile(new File(filename), "r"));
     }
 
     public int getInt(long offset) {
@@ -53,4 +47,5 @@ public class PokemonSave {
             throw new RuntimeException(e);
         }
     }
+
 }

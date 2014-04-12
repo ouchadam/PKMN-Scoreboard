@@ -32,7 +32,7 @@ public class PlayerManager implements DirectoryChangeListener {
             @Override
             public void run() {
                 try {
-                    PlayerView playerView = players.get(path);
+                    PlayerView playerView = players.get(removeFileType(path));
                     playerView.updateFrom(PokemonSaveData.from(path));
                     playerView.revalidate();
                     playerView.repaint();
@@ -43,6 +43,10 @@ public class PlayerManager implements DirectoryChangeListener {
         });
     }
 
+    private String removeFileType(String path) {
+        return path.substring(0, path.lastIndexOf('.'));
+    }
+
     private boolean alreadyExists(String path) {
         return players.containsKey(path);
     }
@@ -51,7 +55,7 @@ public class PlayerManager implements DirectoryChangeListener {
         System.out.println("Sav file : " + path);
         try {
             PlayerView playerView = createPlayerView(PokemonSaveData.from(path));
-            players.put(path, playerView);
+            players.put(removeFileType(path), playerView);
             addPlayerViewToPanel(playerView);
         } catch (IOException e) {
             e.printStackTrace();

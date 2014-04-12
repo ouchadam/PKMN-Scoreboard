@@ -4,7 +4,9 @@ import com.ouchadam.psr.read.domain.Money;
 import com.ouchadam.psr.read.domain.PlayerName;
 import com.ouchadam.psr.read.domain.Playtime;
 import com.ouchadam.psr.read.domain.Team;
-import com.ouchadam.psr.read.reader.SaveReaderFactory;
+import com.ouchadam.psr.read.file.PokemonSave;
+import com.ouchadam.psr.read.reader.PokemonFileReader;
+import com.ouchadam.psr.read.reader.ReaderFactory;
 import com.ouchadam.psr.read.text.TextReader;
 
 import java.io.IOException;
@@ -28,11 +30,11 @@ public class PokemonSaveData {
     }
 
     static PokemonSaveData from(PokemonSave save) throws IOException {
-        SaveReaderFactory saveReaderFactory = new SaveReaderFactory(new TextReader(), new SpeciesToPokedex());
-        SaveReader<PlayerName> playerName = saveReaderFactory.playerName();
-        SaveReader<Money> money = saveReaderFactory.money();
-        SaveReader<Team> team = saveReaderFactory.playerTeam();
-        SaveReader<Playtime> playTime = saveReaderFactory.playTime();
+        ReaderFactory readerFactory = new ReaderFactory(new TextReader(), new SpeciesToPokedex());
+        PokemonFileReader<PlayerName> playerName = readerFactory.save().playerName();
+        PokemonFileReader<Money> money = readerFactory.save().money();
+        PokemonFileReader<Team> team = readerFactory.save().playerTeam();
+        PokemonFileReader<Playtime> playTime = readerFactory.save().playTime();
         return new PokemonSaveData(playerName.read(save), playTime.read(save), money.read(save), team.read(save));
     }
 

@@ -1,48 +1,33 @@
 package com.ouchadam.psr.read.reader;
 
-import com.ouchadam.psr.read.PokemonSave;
-import com.ouchadam.psr.read.SaveReader;
-import com.ouchadam.psr.read.domain.PlayerName;
+import com.ouchadam.psr.read.PokemonFile;
 import com.ouchadam.psr.read.text.TextReader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLDecoder;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class PlayerNameReaderTest {
+public class PlayerNameReaderTest extends ReaderTestHelper {
 
-    SaveReader<PlayerName> playerNameReader;
-
-    @Before
-    public void setUp() throws Exception {
-        playerNameReader = new PlayerNameReader(new TextReader());
+    @Test
+    public void sav() {
+        assertPlayerName(Offsets.SAV_PLAYER_NAME, SAV);
     }
 
     @Test
-    public void parse_the_correct_player_name() {
-        PlayerName playerName = playerNameReader.read(loadTestSave());
-
-        assertThat(playerName.text()).isEqualTo("ASH");
+    public void state_linux() {
+        assertPlayerName(Offsets.STATE_PLAYER_NAME, LINUX_STATE);
     }
 
-    public static PokemonSave loadTestSave() {
-        try {
-            URL url = Thread.currentThread().getContextClassLoader().getResource("save1.sav");
-            File file = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
-            return new PokemonSave(new RandomAccessFile(file, "r"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
+    @Test
+    public void state_windows() {
+        assertPlayerName(windowsOffset(Offsets.STATE_PLAYER_NAME), WIN_STATE);
     }
+
+    private static void assertPlayerName(int playerNameOffset, PokemonFile file) {
+        String playerName = new PlayerNameReader(new TextReader(), playerNameOffset).read(file).text();
+
+        assertThat(playerName).isEqualTo("ASH");
+    }
+
 }

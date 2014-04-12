@@ -1,24 +1,25 @@
 package com.ouchadam.psr.read.reader;
 
-import com.ouchadam.psr.read.PokemonSave;
-import com.ouchadam.psr.read.SaveReader;
+import com.ouchadam.psr.read.PokemonFile;
 import com.ouchadam.psr.read.domain.Money;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class MoneyReader implements SaveReader<Money> {
+public class MoneyReader implements PokemonFileReader<Money> {
 
-    private static final int OFFSET_MONEY = 0x25F3;
     private static final int PLAYER_MONEY_SIZE = 3;
+    private final int baseOffset;
 
-    MoneyReader() {}
+    public MoneyReader(int baseOffset) {
+        this.baseOffset = baseOffset;
+    }
 
     @Override
-    public Money read(PokemonSave save) {
+    public Money read(PokemonFile file) {
         String money = "";
-        for (int index = OFFSET_MONEY; index < OFFSET_MONEY + PLAYER_MONEY_SIZE; index++) {
-            String binary = Integer.toBinaryString(save.getInt(index));
+        for (int index = baseOffset; index < baseOffset + PLAYER_MONEY_SIZE; index++) {
+            String binary = Integer.toBinaryString(file.getInt(index));
             money += mergeIntegers(bcmDecoder(binary));
         }
         return new Money(money);

@@ -1,11 +1,11 @@
 package com.ouchadam.psr;
 
-import com.ouchadam.psr.watcher.FileDirectoryWatcher;
-import com.ouchadam.psr.watcher.FileModifiedHandler;
-import com.ouchadam.psr.watcher.FileTouchedWatcher;
 import com.ouchadam.psr.presentation.MainFrame;
 import com.ouchadam.psr.presentation.PlayerManager;
 import com.ouchadam.psr.presentation.UiReadyListener;
+import com.ouchadam.psr.watcher.FileDirectoryWatcher;
+import com.ouchadam.psr.watcher.FileModifiedHandler;
+import com.ouchadam.psr.watcher.FileTouchedWatcher;
 import com.ouchadam.psr.watcher.PokemonSaveFilter;
 
 import javax.swing.*;
