@@ -1,0 +1,12 @@
+language: java
+jdk: oraclejdk7
+
+before_install:
+ - chmod +x gradlew
+
+script:
+    - ./gradlew test
+
+after_success:
+    - ./gradlew cobertura
+    - ./gradlew coveralls
