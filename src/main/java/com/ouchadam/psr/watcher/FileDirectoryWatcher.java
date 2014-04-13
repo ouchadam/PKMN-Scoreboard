@@ -1,10 +1,7 @@
 package com.ouchadam.psr.watcher;
 
 import java.io.IOException;
-import java.nio.file.*;
-
-import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
-import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.Path;
 
 public class FileDirectoryWatcher {
 
@@ -16,7 +13,6 @@ public class FileDirectoryWatcher {
         this.fileModifiedHandler = fileModifiedHandler;
         this.watchDirectory = watchDirectory;
         this.filter = filter;
-        validateDir(watchDirectory);
     }
 
     public void startWatching() {
@@ -24,7 +20,7 @@ public class FileDirectoryWatcher {
             @Override
             public void run() {
                 try {
-                    internalStartWatching();
+                    FileWatchService.newInstance(watchDirectory).startWatching(onFileFound);
                 } catch (IOException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -32,53 +28,13 @@ public class FileDirectoryWatcher {
         }).start();
     }
 
-    public void internalStartWatching() throws IOException, InterruptedException {
-        FileSystem fs = watchDirectory.getFileSystem();
-        try (WatchService service = fs.newWatchService()) {
-            watchDirectory.register(service, ENTRY_CREATE, ENTRY_MODIFY);
-            WatchKey key = null;
-            while (true) {
-                key = service.take();
-                WatchEvent.Kind<?> kind = null;
-                for (WatchEvent<?> watchEvent : key.pollEvents()) {
-                    kind = watchEvent.kind();
-                    if (OVERFLOW == kind) {
-                        continue;
-                    } else if (ENTRY_CREATE == kind) {
-                        Path newPath = getPath(watchEvent);
-                        if (filter.accept(newPath.toString())) {
-                            fileModifiedHandler.onNew(newPath, watchDirectory);
-                        }
-                    } else if (StandardWatchEventKinds.ENTRY_MODIFY == kind) {
-                        Path newPath = getPath(watchEvent);
-                        if (filter.accept(newPath.toString())) {
-                            fileModifiedHandler.onModified(newPath, watchDirectory);
-                        }
-                    }
-                }
-                if (!key.reset()) {
-                    break;
-                }
+    private final FileFoundListener onFileFound = new FileFoundListener() {
+        @Override
+        public void onFileFound(Path path) {
+            if (filter.accept(path.toString())) {
+                fileModifiedHandler.onNew(path, watchDirectory);
             }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    private Path getPath(WatchEvent watchEvent) {
-        return ((WatchEvent<Path>) watchEvent).context();
-    }
-
-    private void validateDir(Path path) {
-        try {
-            Boolean isFolder = (Boolean) Files.getAttribute(path, "basic:isDirectory", NOFOLLOW_LINKS);
-            if (!isFolder) {
-                throw new IllegalArgumentException("Path: " + path + " is not a folder");
-            }
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
-    }
+    };
 
 }
