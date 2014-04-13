@@ -16,8 +16,7 @@ public class FileHelper {
     public static PokemonFile loadState(String filename) {
         try {
             URL url = Thread.currentThread().getContextClassLoader().getResource(filename);
-            File file = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
-            return new PokemonState(new RandomAccessFile(file, "r"));
+            return PokemonState.from(URLDecoder.decode(url.getFile(), "UTF-8"));
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

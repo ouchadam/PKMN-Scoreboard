@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 
+import static com.ouchadam.psr.read.domain.PokemonFileType.SAV;
+
 public class PokemonSave extends RandomFileAccessWrapper {
 
     public PokemonSave(RandomAccessFile file) {
@@ -18,11 +20,11 @@ public class PokemonSave extends RandomFileAccessWrapper {
     }
 
     private static void validate(String filename) {
-        if (!filename.endsWith(".sav")) throw new IllegalArgumentException("File is not a .sav");
+        if (!filename.endsWith(SAV.fileType())) throw new IllegalArgumentException("File is not a " + SAV.fileType());
     }
 
     @Override
     public PokemonFileType getType() {
-        return PokemonFileType.SAV;
+        return SAV;
     }
 }
