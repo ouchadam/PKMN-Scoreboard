@@ -47,7 +47,7 @@ public class Main {
             }
         }
 
-        for (File file : saveDir.listFiles()) {
+        for (File file : saveDir.listFiles(new PokemonFileFilter())) {
             if (file.exists() && !file.isDirectory()) {
                 playerManager.onFileChange(file.getPath());
             }

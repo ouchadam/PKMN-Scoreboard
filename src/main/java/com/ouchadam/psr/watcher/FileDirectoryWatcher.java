@@ -46,12 +46,12 @@ public class FileDirectoryWatcher {
                         continue;
                     } else if (ENTRY_CREATE == kind) {
                         Path newPath = getPath(watchEvent);
-                        if (filter.isWantedFileType(getFileType(newPath))) {
+                        if (filter.accept(newPath.toString())) {
                             fileModifiedHandler.onNew(newPath, watchDirectory);
                         }
                     } else if (StandardWatchEventKinds.ENTRY_MODIFY == kind) {
                         Path newPath = getPath(watchEvent);
-                        if (filter.isWantedFileType(getFileType(newPath))) {
+                        if (filter.accept(newPath.toString())) {
                             fileModifiedHandler.onModified(newPath, watchDirectory);
                         }
                     }
@@ -68,10 +68,6 @@ public class FileDirectoryWatcher {
     @SuppressWarnings("unchecked")
     private Path getPath(WatchEvent watchEvent) {
         return ((WatchEvent<Path>) watchEvent).context();
-    }
-
-    private String getFileType(Path file) {
-        return file.toString().substring(file.toString().lastIndexOf('.'));
     }
 
     private void validateDir(Path path) {

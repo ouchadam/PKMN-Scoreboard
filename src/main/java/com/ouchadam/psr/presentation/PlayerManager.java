@@ -33,11 +33,11 @@ public class PlayerManager implements DirectoryChangeListener {
     }
 
     private void updateExisting(final String path) {
+        final PlayerView playerView = players.get(path);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    PlayerView playerView = players.get(removeFileType(path));
                     playerView.updateFrom(createData(path));
                     playerView.revalidate();
                     playerView.repaint();
@@ -52,19 +52,17 @@ public class PlayerManager implements DirectoryChangeListener {
         return pokemonFileParser.read(PokemonFileType.from(path));
     }
 
-    private String removeFileType(String path) {
-        return path.substring(0, path.lastIndexOf('.'));
-    }
-
     private boolean alreadyExists(String path) {
+        System.out.println(path + " Exists? : " + players.containsKey(path));
         return players.containsKey(path);
     }
 
     private void addPlayerView(final String path) {
-        System.out.println("Sav file : " + path);
+        System.out.println("Adding file : " + path);
         try {
             PlayerView playerView = createPlayerView(createData(path));
-            players.put(removeFileType(path), playerView);
+            System.out.println("Adding : " + path);
+            players.put(path, playerView);
             addPlayerViewToPanel(playerView);
         } catch (IOException e) {
             e.printStackTrace();

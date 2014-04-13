@@ -1,5 +1,7 @@
 package com.ouchadam.psr.watcher;
 
-public interface Filter {
-    boolean isWantedFileType(String fileType);
+import java.io.FilenameFilter;
+
+public interface Filter extends FilenameFilter {
+    boolean accept(String fileType);
 }
