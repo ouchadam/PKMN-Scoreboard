@@ -1,9 +1,12 @@
 package com.ouchadam.psr.presentation;
 
-import com.ouchadam.psr.read.PokemonSaveData;
+import com.ouchadam.psr.read.PokemonFileParser;
+import com.ouchadam.psr.read.domain.ParsedPokemonData;
+import com.ouchadam.psr.read.domain.PokemonFileType;
 import com.ouchadam.psr.watcher.DirectoryChangeListener;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +15,11 @@ public class PlayerManager implements DirectoryChangeListener {
 
     private final JPanel parentPanel;
     private final Map<String, PlayerView> players;
+    private final PokemonFileParser pokemonFileParser;
 
-    public PlayerManager(JPanel parentPanel) {
+    public PlayerManager(JPanel parentPanel, PokemonFileParser pokemonFileParser) {
         this.parentPanel = parentPanel;
+        this.pokemonFileParser = pokemonFileParser;
         this.players = new HashMap<>();
     }
 
@@ -33,7 +38,7 @@ public class PlayerManager implements DirectoryChangeListener {
             public void run() {
                 try {
                     PlayerView playerView = players.get(removeFileType(path));
-                    playerView.updateFrom(PokemonSaveData.from(path));
+                    playerView.updateFrom(createData(path));
                     playerView.revalidate();
                     playerView.repaint();
                 } catch (IOException e) {
@@ -41,6 +46,10 @@ public class PlayerManager implements DirectoryChangeListener {
                 }
             }
         });
+    }
+
+    private ParsedPokemonData createData(String path) throws FileNotFoundException {
+        return pokemonFileParser.read(PokemonFileType.from(path));
     }
 
     private String removeFileType(String path) {
@@ -54,7 +63,7 @@ public class PlayerManager implements DirectoryChangeListener {
     private void addPlayerView(final String path) {
         System.out.println("Sav file : " + path);
         try {
-            PlayerView playerView = createPlayerView(PokemonSaveData.from(path));
+            PlayerView playerView = createPlayerView(createData(path));
             players.put(removeFileType(path), playerView);
             addPlayerViewToPanel(playerView);
         } catch (IOException e) {
@@ -62,9 +71,9 @@ public class PlayerManager implements DirectoryChangeListener {
         }
     }
 
-    private PlayerView createPlayerView(PokemonSaveData pokemonSaveData) {
+    private PlayerView createPlayerView(ParsedPokemonData parsedPokemonData) {
         PlayerView playerView = new PlayerView();
-        playerView.updateFrom(pokemonSaveData);
+        playerView.updateFrom(parsedPokemonData);
         return playerView;
     }
 

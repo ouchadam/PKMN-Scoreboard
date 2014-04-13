@@ -1,7 +1,7 @@
 package com.ouchadam.psr.presentation;
 
+import com.ouchadam.psr.read.domain.ParsedPokemonData;
 import com.ouchadam.psr.read.domain.Pokemon;
-import com.ouchadam.psr.read.PokemonSaveData;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,7 +18,7 @@ public class PlayerView extends JPanel {
         setBackground(Color.BLACK);
     }
 
-    public void updateFrom(PokemonSaveData save) {
+    public void updateFrom(ParsedPokemonData save) {
         removeAll();
         add(createLabel("Player : " + save.getPlayerName().text()));
         add(createLabel("Time : " + save.getPlaytime().formatted()));

@@ -1,12 +1,12 @@
 package com.ouchadam.psr.read.file;
 
-import com.ouchadam.psr.read.PokemonFile;
+import com.ouchadam.psr.read.domain.PokemonFileType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 
-public class PokemonState extends RandomFileAccessWrapper implements PokemonFile {
+public class PokemonState extends RandomFileAccessWrapper {
 
     public PokemonState(RandomAccessFile file) {
         super(file);
@@ -22,22 +22,7 @@ public class PokemonState extends RandomFileAccessWrapper implements PokemonFile
     }
 
     @Override
-    public int getInt(int index) {
-        return super.getInt(index);
-    }
-
-    @Override
-    public int getTwoInt(int offset, int offset2) {
-        return super.getTwoInt(offset, offset2);
-    }
-
-    @Override
-    public String getHex(int offset) {
-        return super.getHex(offset);
-    }
-
-    @Override
-    public long length() {
-        return super.length();
+    public PokemonFileType getType() {
+        return PokemonFileType.STATE;
     }
 }

@@ -1,16 +1,19 @@
 package com.ouchadam.psr.read.file;
 
+import com.ouchadam.psr.read.PokemonFile;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class RandomFileAccessWrapper {
+public abstract class RandomFileAccessWrapper implements PokemonFile {
 
     private final RandomAccessFile file;
 
-    RandomFileAccessWrapper(RandomAccessFile file) {
+    protected RandomFileAccessWrapper(RandomAccessFile file) {
         this.file = file;
     }
 
+    @Override
     public int getInt(long offset) {
         try {
             file.seek(offset);
@@ -20,6 +23,7 @@ public class RandomFileAccessWrapper {
         }
     }
 
+    @Override
     public int getTwoInt(int offset, int offset2) {
         String hex1 = getHex(offset);
         String hex2 = getHex(offset2);
@@ -40,6 +44,7 @@ public class RandomFileAccessWrapper {
         return Integer.toHexString(getInt(offset)).trim();
     }
 
+    @Override
     public long length() {
         try {
             return file.length();
