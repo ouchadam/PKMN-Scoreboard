@@ -1,6 +1,7 @@
 package com.ouchadam.psr.read.file;
 
 import com.ouchadam.psr.read.PokemonFile;
+import com.ouchadam.psr.read.reader.PokemonFileReadException;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -19,7 +20,7 @@ public abstract class RandomFileAccessWrapper implements PokemonFile {
             file.seek(offset);
             return file.readUnsignedByte();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new PokemonFileReadException(e);
         }
     }
 
@@ -49,7 +50,7 @@ public abstract class RandomFileAccessWrapper implements PokemonFile {
         try {
             return file.length();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new PokemonFileReadException(e);
         }
     }
 

@@ -68,7 +68,7 @@ public class TeamReader implements PokemonFileReader<Team> {
                 }
             }
         }
-        throw new RuntimeException("Bad pokemon name count : found  :" + names.size() + " but expected :" + teamCount);
+        throw new PokemonFileReadException("Bad pokemon name count : found  :" + names.size() + " but expected :" + teamCount);
     }
 
 }

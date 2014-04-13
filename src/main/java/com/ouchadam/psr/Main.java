@@ -46,13 +46,11 @@ public class Main {
                 throw new RuntimeException("Failed to make save directory");
             }
         }
-
         for (File file : saveDir.listFiles(new PokemonFileFilter())) {
             if (file.exists() && !file.isDirectory()) {
                 playerManager.onFileChange(file.getPath());
             }
         }
-
     }
 
     private static void startWatching(FileModifiedHandler fileTouchedWatcher) {

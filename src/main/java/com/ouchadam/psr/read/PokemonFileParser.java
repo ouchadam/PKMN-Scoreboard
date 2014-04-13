@@ -19,6 +19,7 @@ public class PokemonFileParser implements PokemonFileReader<ParsedPokemonData> {
                 return createParsedData(file, readerFactory.save());
 
             case STATE:
+                readerFactory.findOffset(file);
                 return createParsedData(file, readerFactory.state());
 
             default:
