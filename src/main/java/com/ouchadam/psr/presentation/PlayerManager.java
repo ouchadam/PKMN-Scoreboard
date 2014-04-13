@@ -53,7 +53,6 @@ public class PlayerManager implements DirectoryChangeListener {
     }
 
     private boolean alreadyExists(String path) {
-        System.out.println(path + " Exists? : " + players.containsKey(path));
         return players.containsKey(path);
     }
 
@@ -61,7 +60,6 @@ public class PlayerManager implements DirectoryChangeListener {
         System.out.println("Adding file : " + path);
         try {
             PlayerView playerView = createPlayerView(createData(path));
-            System.out.println("Adding : " + path);
             players.put(path, playerView);
             addPlayerViewToPanel(playerView);
         } catch (IOException e) {
