@@ -16,37 +16,37 @@ public class PlayerManager implements DirectoryChangeListener {
     private final JPanel parentPanel;
     private final Map<String, PlayerView> players;
     private final PokemonFileParser pokemonFileParser;
+    private final UiInvoker uiInvoker;
 
-    public PlayerManager(JPanel parentPanel, PokemonFileParser pokemonFileParser) {
+    public PlayerManager(JPanel parentPanel, PokemonFileParser pokemonFileParser, UiInvoker uiInvoker) {
         this.parentPanel = parentPanel;
         this.pokemonFileParser = pokemonFileParser;
+        this.uiInvoker = uiInvoker;
         this.players = new HashMap<>();
     }
 
     @Override
     public void onFileChange(String path) {
         if (alreadyExists(path)) {
-            updateExisting(path);
+            uiInvoker.invokeLater(updateExisting, path);
         } else {
             addPlayerView(path);
         }
     }
 
-    private void updateExisting(final String path) {
-        final PlayerView playerView = players.get(path);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    playerView.updateFrom(createData(path));
-                    playerView.revalidate();
-                    playerView.repaint();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    private final UiInvoker.InvokeLater<String> updateExisting = new UiInvoker.InvokeLater<String>() {
+        @Override
+        public void invokeLater(String what) {
+            try {
+                final PlayerView playerView = players.get(what);
+                playerView.updateFrom(createData(what));
+                playerView.revalidate();
+                playerView.repaint();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-    }
+        }
+    };
 
     private ParsedPokemonData createData(String path) throws FileNotFoundException {
         return pokemonFileParser.read(PokemonFileType.from(path));
@@ -61,7 +61,7 @@ public class PlayerManager implements DirectoryChangeListener {
         try {
             PlayerView playerView = createPlayerView(createData(path));
             players.put(path, playerView);
-            addPlayerViewToPanel(playerView);
+            uiInvoker.invokeLater(addPlayerViewToPanel, playerView);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,14 +73,13 @@ public class PlayerManager implements DirectoryChangeListener {
         return playerView;
     }
 
-    private void addPlayerViewToPanel(final PlayerView playerView) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                parentPanel.add(playerView);
-                parentPanel.revalidate();
-                parentPanel.repaint();
-            }
-        });
-    }
+    private final UiInvoker.InvokeLater<PlayerView> addPlayerViewToPanel = new UiInvoker.InvokeLater<PlayerView>() {
+        @Override
+        public void invokeLater(PlayerView playerView) {
+            parentPanel.add(playerView);
+            parentPanel.revalidate();
+            parentPanel.repaint();
+        }
+    };
+
 }
