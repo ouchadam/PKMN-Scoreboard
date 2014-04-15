@@ -5,12 +5,12 @@ import java.nio.file.Path;
 
 public class FileDirectoryWatcher {
 
-    private final FileModifiedHandler fileModifiedHandler;
+    private final FileTouchListener fileTouchListener;
     private final Path watchDirectory;
     private final Filter filter;
 
-    public FileDirectoryWatcher(FileModifiedHandler fileModifiedHandler, Path watchDirectory, Filter filter) {
-        this.fileModifiedHandler = fileModifiedHandler;
+    public FileDirectoryWatcher(FileTouchListener fileTouchListener, Path watchDirectory, Filter filter) {
+        this.fileTouchListener = fileTouchListener;
         this.watchDirectory = watchDirectory;
         this.filter = filter;
     }
@@ -32,7 +32,7 @@ public class FileDirectoryWatcher {
         @Override
         public void onFileFound(Path path) {
             if (filter.accept(path.toString())) {
-                fileModifiedHandler.onNew(path, watchDirectory);
+                fileTouchListener.onFileTouched(path, watchDirectory);
             }
         }
     };

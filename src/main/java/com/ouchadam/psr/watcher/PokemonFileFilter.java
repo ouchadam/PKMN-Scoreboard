@@ -18,6 +18,6 @@ public class PokemonFileFilter implements Filter {
     }
 
     private String getFileType(String name) {
-        return name.toString().substring(name.lastIndexOf('.'));
+        return name.substring(name.lastIndexOf('.'));
     }
 }

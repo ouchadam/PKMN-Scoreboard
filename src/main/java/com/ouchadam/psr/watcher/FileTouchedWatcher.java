@@ -3,7 +3,7 @@ package com.ouchadam.psr.watcher;
 import java.io.File;
 import java.nio.file.Path;
 
-public class FileTouchedWatcher implements FileModifiedHandler {
+public class FileTouchedWatcher implements FileTouchListener {
 
     private final DirectoryChangeListener fileListener;
 
@@ -12,16 +12,7 @@ public class FileTouchedWatcher implements FileModifiedHandler {
     }
 
     @Override
-    public void onModified(Path file, Path directory) {
-        onFileFound(file, directory);
-    }
-
-    @Override
-    public void onNew(Path file, Path directory) {
-        onFileFound(file, directory);
-    }
-
-    private void onFileFound(Path file, Path directory) {
+    public void onFileTouched(Path file, Path directory) {
         String path = directory.toString() + File.separator + file.toString();
         blockUntilFileIsReady(path, fileListener);
     }

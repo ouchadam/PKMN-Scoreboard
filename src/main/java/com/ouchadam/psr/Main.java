@@ -8,7 +8,7 @@ import com.ouchadam.psr.read.SpeciesToPokedex;
 import com.ouchadam.psr.read.reader.ReaderFactory;
 import com.ouchadam.psr.read.text.TextReader;
 import com.ouchadam.psr.watcher.FileDirectoryWatcher;
-import com.ouchadam.psr.watcher.FileModifiedHandler;
+import com.ouchadam.psr.watcher.FileTouchListener;
 import com.ouchadam.psr.watcher.FileTouchedWatcher;
 import com.ouchadam.psr.watcher.PokemonFileFilter;
 
@@ -33,7 +33,7 @@ public class Main {
             parentPanel.setBackground(Color.BLACK);
             frame.add(parentPanel);
             PlayerManager playerManager = new PlayerManager(parentPanel, new PokemonFileParser(new ReaderFactory(new TextReader(), new SpeciesToPokedex())));
-            FileModifiedHandler fileTouchedWatcher = new FileTouchedWatcher(playerManager);
+            FileTouchListener fileTouchedWatcher = new FileTouchedWatcher(playerManager);
             initSavesDirectory(playerManager);
             startWatching(fileTouchedWatcher);
         }
@@ -53,7 +53,7 @@ public class Main {
         }
     }
 
-    private static void startWatching(FileModifiedHandler fileTouchedWatcher) {
+    private static void startWatching(FileTouchListener fileTouchedWatcher) {
         new FileDirectoryWatcher(fileTouchedWatcher, Paths.get(POKEMON_SAVES_DIRECTORY), new PokemonFileFilter()).startWatching();
     }
 
