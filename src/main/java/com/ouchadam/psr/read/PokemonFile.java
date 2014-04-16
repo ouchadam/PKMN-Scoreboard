@@ -7,4 +7,5 @@ public interface PokemonFile {
     int getTwoInt(int offset1, int offset2);
     long length();
     PokemonFileType getType();
+    String getFileName();
 }

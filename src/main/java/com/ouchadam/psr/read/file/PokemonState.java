@@ -11,13 +11,13 @@ import static com.ouchadam.psr.read.domain.PokemonFileType.STATE;
 
 public class PokemonState extends RandomFileAccessWrapper {
 
-    public PokemonState(RandomAccessFile file) {
-        super(file);
+    public PokemonState(RandomAccessFile file, String filename) {
+        super(file, filename);
     }
 
     public static PokemonState from(String filename) throws FileNotFoundException {
         validate(filename);
-        return new PokemonState(new RandomAccessFile(readGzip(filename), "r"));
+        return new PokemonState(new RandomAccessFile(readGzip(filename), "r"), filename);
     }
 
     private static void validate(String filename) {

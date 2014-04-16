@@ -42,7 +42,7 @@ public class PlayerManager implements DirectoryChangeListener {
 
     final UiInvoker.InvokeLater<String> updateExisting = new UiInvoker.InvokeLater<String>() {
         @Override
-        public void invokeLater(String what) {
+        public void invokeLater(final String what) {
             try {
                 final PlayerView playerView = players.get(what);
                 playerView.updateFrom(createData(what));

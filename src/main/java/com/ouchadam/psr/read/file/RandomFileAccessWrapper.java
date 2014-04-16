@@ -9,9 +9,11 @@ import java.io.RandomAccessFile;
 public abstract class RandomFileAccessWrapper implements PokemonFile {
 
     private final RandomAccessFile file;
+    private final String filename;
 
-    protected RandomFileAccessWrapper(RandomAccessFile file) {
+    protected RandomFileAccessWrapper(RandomAccessFile file, String filename) {
         this.file = file;
+        this.filename = filename;
     }
 
     @Override
@@ -54,4 +56,8 @@ public abstract class RandomFileAccessWrapper implements PokemonFile {
         }
     }
 
+    @Override
+    public String getFileName() {
+        return filename;
+    }
 }

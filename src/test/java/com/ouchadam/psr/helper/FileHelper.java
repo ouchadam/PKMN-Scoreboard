@@ -26,7 +26,7 @@ public class FileHelper {
         try {
             URL url = Thread.currentThread().getContextClassLoader().getResource(filename);
             File file = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
-            return new PokemonSave(new RandomAccessFile(file, "r"));
+            return new PokemonSave(new RandomAccessFile(file, "r"), filename);
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }

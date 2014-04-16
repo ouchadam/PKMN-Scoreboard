@@ -1,5 +1,6 @@
 package com.ouchadam.psr.read.reader;
 
+import com.ouchadam.psr.read.OffsetFinder;
 import com.ouchadam.psr.read.Pokedex;
 import com.ouchadam.psr.read.PokemonFile;
 import com.ouchadam.psr.read.domain.Money;
@@ -12,13 +13,14 @@ public class ReaderFactory {
 
     private final TextReader textReader;
     private final Pokedex pokedex;
+    private final OffsetFinder offsetFinder;
 
     private int offset;
 
-    public ReaderFactory(TextReader textReader, Pokedex pokedex) {
+    public ReaderFactory(TextReader textReader, Pokedex pokedex, OffsetFinder offsetFinder) {
         this.textReader = textReader;
         this.pokedex = pokedex;
-        this.offset = 0;
+        this.offsetFinder = offsetFinder;
     }
 
     public Reader save() {
@@ -30,12 +32,7 @@ public class ReaderFactory {
     }
 
     public void findOffset(PokemonFile file) {
-        try {
-            new State(0).playerTeam().read(file);
-            this.offset = 0;
-        } catch (PokemonFileReadException e) {
-            this.offset = Offsets.WINDOWS_STATE_OFFSET;
-        }
+        offset = offsetFinder.findBaseOffset(file);
     }
 
     public class Sav implements Reader {
@@ -69,22 +66,22 @@ public class ReaderFactory {
 
         @Override
         public PokemonFileReader<Money> money() {
-            return new MoneyReader(Offsets.STATE_MONEY - offset);
+            return new MoneyReader(DeltaOffsets.STATE_DELTA_MONEY + offset);
         }
 
         @Override
         public PokemonFileReader<PlayerName> playerName() {
-            return new PlayerNameReader(textReader, Offsets.STATE_PLAYER_NAME - offset);
+            return new PlayerNameReader(textReader, DeltaOffsets.STATE_DELTA_PLAYER_NAME + offset);
         }
 
         @Override
         public PokemonFileReader<Team> playerTeam() {
-            return new TeamReader(textReader, pokedex, new TeamOffsets(Offsets.STATE_TEAM - offset));
+            return new TeamReader(textReader, pokedex, new TeamOffsets(DeltaOffsets.STATE_DELTA_TEAM + offset));
         }
 
         @Override
         public PokemonFileReader<Playtime> playTime() {
-            return new PlaytimeReader(Offsets.STATE_PLAYTIME - offset);
+            return new PlaytimeReader(DeltaOffsets.STATE_DELTA_PLAYTIME + offset);
         }
     }
 

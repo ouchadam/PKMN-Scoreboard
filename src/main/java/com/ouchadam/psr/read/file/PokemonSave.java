@@ -10,13 +10,13 @@ import static com.ouchadam.psr.read.domain.PokemonFileType.SAV;
 
 public class PokemonSave extends RandomFileAccessWrapper {
 
-    public PokemonSave(RandomAccessFile file) {
-        super(file);
+    public PokemonSave(RandomAccessFile file, String filename) {
+        super(file, filename);
     }
 
     public static PokemonSave from(String filename) throws FileNotFoundException {
         validate(filename);
-        return new PokemonSave(new RandomAccessFile(new File(filename), "r"));
+        return new PokemonSave(new RandomAccessFile(new File(filename), "r"), filename);
     }
 
     private static void validate(String filename) {
