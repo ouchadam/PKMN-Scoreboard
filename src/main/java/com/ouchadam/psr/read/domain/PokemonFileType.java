@@ -33,14 +33,4 @@ public enum PokemonFileType {
     public abstract String fileType();
     public abstract PokemonFile file(String path) throws FileNotFoundException;
 
-    public static PokemonFile from(String path) throws FileNotFoundException {
-        String type = path.substring(path.lastIndexOf('.'));
-        for (PokemonFileType pokemonFileType : values()) {
-            if (pokemonFileType.fileType().equals(type)) {
-                return pokemonFileType.file(path);
-            }
-        }
-        throw new RuntimeException("Unhandled file type : " + path);
-    }
-
 }

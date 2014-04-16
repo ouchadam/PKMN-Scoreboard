@@ -2,7 +2,6 @@ package com.ouchadam.psr;
 
 import com.ouchadam.psr.presentation.MainFrame;
 import com.ouchadam.psr.presentation.PlayerManager;
-import com.ouchadam.psr.presentation.UiInvoker;
 import com.ouchadam.psr.presentation.UiReadyListener;
 import com.ouchadam.psr.read.PokemonFileParser;
 import com.ouchadam.psr.read.SpeciesToPokedex;
@@ -33,7 +32,7 @@ public class Main {
             JPanel parentPanel = new JPanel(new GridLayout(1, 4));
             parentPanel.setBackground(Color.BLACK);
             frame.add(parentPanel);
-            PlayerManager playerManager = new PlayerManager(parentPanel, new PokemonFileParser(new ReaderFactory(new TextReader(), new SpeciesToPokedex())), new UiInvoker());
+            PlayerManager playerManager = new PlayerManager(parentPanel, new PokemonFileParser(new ReaderFactory(new TextReader(), new SpeciesToPokedex())));
             FileTouchListener fileTouchedWatcher = new FileTouchedWatcher(playerManager);
             initSavesDirectory(playerManager);
             startWatching(fileTouchedWatcher);

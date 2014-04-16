@@ -29,9 +29,6 @@ public class PokemonState extends RandomFileAccessWrapper {
         try {
             File file = File.createTempFile("pkstate", ".gz");
             FileUtils.copyFile(new File(path), file);
-
-
-
             InputStream inStream = new GZIPInputStream(new FileInputStream(file));
             ByteArrayOutputStream baoStream2 = new ByteArrayOutputStream();
             byte[] buffer = new byte[8192];
@@ -39,7 +36,6 @@ public class PokemonState extends RandomFileAccessWrapper {
             while ((len = inStream.read(buffer)) > 0) {
                 baoStream2.write(buffer, 0, len);
             }
-
             FileUtils.writeByteArrayToFile(file, baoStream2.toByteArray());
             return file;
         } catch (IOException ex) {

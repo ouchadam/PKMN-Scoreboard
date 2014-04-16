@@ -12,6 +12,8 @@ import java.net.URL;
 
 public class PlayerView extends JPanel {
 
+    private int dataId;
+
     public PlayerView() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setPreferredSize(new Dimension(300, 500));
@@ -19,6 +21,7 @@ public class PlayerView extends JPanel {
     }
 
     public void updateFrom(ParsedPokemonData save) {
+        this.dataId = save.hashCode();
         removeAll();
         add(createLabel("Player : " + save.getPlayerName().text()));
         add(createLabel("Time : " + save.getPlaytime().formatted()));
@@ -68,4 +71,17 @@ public class PlayerView extends JPanel {
         return null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerView that = (PlayerView) o;
+        if (dataId != that.dataId) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return dataId;
+    }
 }

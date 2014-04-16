@@ -2,7 +2,7 @@ package com.ouchadam.psr.presentation;
 
 import com.ouchadam.psr.read.PokemonFileParser;
 import com.ouchadam.psr.read.domain.ParsedPokemonData;
-import com.ouchadam.psr.read.domain.PokemonFileType;
+import com.ouchadam.psr.read.domain.PokemonFileOpener;
 import com.ouchadam.psr.watcher.DirectoryChangeListener;
 
 import javax.swing.*;
@@ -17,12 +17,18 @@ public class PlayerManager implements DirectoryChangeListener {
     private final Map<String, PlayerView> players;
     private final PokemonFileParser pokemonFileParser;
     private final UiInvoker uiInvoker;
+    private final PokemonFileOpener fileOpener;
 
-    public PlayerManager(JPanel parentPanel, PokemonFileParser pokemonFileParser, UiInvoker uiInvoker) {
+    public PlayerManager(JPanel parentPanel, PokemonFileParser pokemonFileParser) {
+        this(parentPanel, pokemonFileParser, new UiInvoker(), new PokemonFileOpener(), new HashMap<String, PlayerView>());
+    }
+
+    PlayerManager(JPanel parentPanel, PokemonFileParser pokemonFileParser, UiInvoker uiInvoker, PokemonFileOpener fileOpener, Map<String, PlayerView> players) {
         this.parentPanel = parentPanel;
         this.pokemonFileParser = pokemonFileParser;
         this.uiInvoker = uiInvoker;
-        this.players = new HashMap<>();
+        this.fileOpener = fileOpener;
+        this.players = players;
     }
 
     @Override
@@ -34,7 +40,7 @@ public class PlayerManager implements DirectoryChangeListener {
         }
     }
 
-    private final UiInvoker.InvokeLater<String> updateExisting = new UiInvoker.InvokeLater<String>() {
+    final UiInvoker.InvokeLater<String> updateExisting = new UiInvoker.InvokeLater<String>() {
         @Override
         public void invokeLater(String what) {
             try {
@@ -49,7 +55,7 @@ public class PlayerManager implements DirectoryChangeListener {
     };
 
     private ParsedPokemonData createData(String path) throws FileNotFoundException {
-        return pokemonFileParser.read(PokemonFileType.from(path));
+        return pokemonFileParser.read(fileOpener.from(path));
     }
 
     private boolean alreadyExists(String path) {
@@ -73,7 +79,7 @@ public class PlayerManager implements DirectoryChangeListener {
         return playerView;
     }
 
-    private final UiInvoker.InvokeLater<PlayerView> addPlayerViewToPanel = new UiInvoker.InvokeLater<PlayerView>() {
+    final UiInvoker.InvokeLater<PlayerView> addPlayerViewToPanel = new UiInvoker.InvokeLater<PlayerView>() {
         @Override
         public void invokeLater(PlayerView playerView) {
             parentPanel.add(playerView);
