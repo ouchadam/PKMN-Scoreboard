@@ -1,7 +1,7 @@
 package com.ouchadam.psr.helper;
 
+import com.ouchadam.psr.read.Pokedex;
 import com.ouchadam.psr.read.PokemonFile;
-import com.ouchadam.psr.read.SpeciesToPokedex;
 import com.ouchadam.psr.read.domain.Money;
 import com.ouchadam.psr.read.domain.Playtime;
 import com.ouchadam.psr.read.domain.Pokemon;
@@ -83,9 +83,9 @@ public class Dumper {
     public static void dumpPokemon(PokemonFile file, String name, int level) {
         System.out.println("Start");
         TextReader textReader = new TextReader();
-        SpeciesToPokedex speciesToPokedex = new SpeciesToPokedex();
+        Pokedex pokedex = new Pokedex();
         for (int i = 0; i < file.length() - 3; i++) {
-            TeamReader moneyStateReader = new TeamReader(textReader, speciesToPokedex, new TeamOffsets(i));
+            TeamReader moneyStateReader = new TeamReader(textReader, pokedex, new TeamOffsets(i));
             try {
                 Team team = moneyStateReader.read(file);
                 Pokemon pokemon = team.pokemons.get(0);

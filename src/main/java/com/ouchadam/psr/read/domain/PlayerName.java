@@ -11,4 +11,8 @@ public class PlayerName {
     public String text() {
         return playerName;
     }
+
+    public int length() {
+        return playerName.length();
+    }
 }

@@ -3,8 +3,8 @@ package com.ouchadam.psr;
 import com.ouchadam.psr.presentation.MainFrame;
 import com.ouchadam.psr.presentation.PlayerManager;
 import com.ouchadam.psr.presentation.UiReadyListener;
+import com.ouchadam.psr.read.Pokedex;
 import com.ouchadam.psr.read.PokemonFileParser;
-import com.ouchadam.psr.read.SpeciesToPokedex;
 import com.ouchadam.psr.read.reader.ReaderFactory;
 import com.ouchadam.psr.read.text.TextReader;
 import com.ouchadam.psr.watcher.FileDirectoryWatcher;
@@ -32,7 +32,7 @@ public class Main {
             JPanel parentPanel = new JPanel(new GridLayout(1, 4));
             parentPanel.setBackground(Color.BLACK);
             frame.add(parentPanel);
-            PlayerManager playerManager = new PlayerManager(parentPanel, new PokemonFileParser(new ReaderFactory(new TextReader(), new SpeciesToPokedex())));
+            PlayerManager playerManager = new PlayerManager(parentPanel, new PokemonFileParser(new ReaderFactory(new TextReader(), new Pokedex())));
             FileTouchListener fileTouchedWatcher = new FileTouchedWatcher(playerManager);
             initSavesDirectory(playerManager);
             startWatching(fileTouchedWatcher);

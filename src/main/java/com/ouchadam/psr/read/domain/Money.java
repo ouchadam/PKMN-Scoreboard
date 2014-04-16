@@ -8,6 +8,10 @@ public class Money {
         this.money = Long.parseLong(money);
     }
 
+    public long value() {
+        return money;
+    }
+
     public String formatted() {
         return "$" + money;
     }
@@ -20,9 +24,10 @@ public class Money {
         if (money != money1.money) return false;
         return true;
     }
-
     @Override
     public int hashCode() {
         return (int) (money ^ (money >>> 32));
+
+
     }
 }

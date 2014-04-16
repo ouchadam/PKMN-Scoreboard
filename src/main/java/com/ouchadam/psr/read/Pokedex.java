@@ -3,16 +3,15 @@ package com.ouchadam.psr.read;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeciesToPokedex {
+public class Pokedex {
 
     static List<String> POKEDEX = new ArrayList<String>(151);
+    private static final int ZERO_INDEX_COEFF = 1;
 
     static {
-
         POKEDEX.add("Bulbasaur");
         POKEDEX.add("Ivysaur");
         POKEDEX.add("Venusaur");
-
         POKEDEX.add("Charmander");
         POKEDEX.add("Charmeleon");
         POKEDEX.add("Charizard");
@@ -28,21 +27,17 @@ public class SpeciesToPokedex {
         POKEDEX.add("Pidgey");
         POKEDEX.add("Pidgeotto");
         POKEDEX.add("Pidgeot");
-
         POKEDEX.add("Rattata");
         POKEDEX.add("Raticate");
         POKEDEX.add("Spearow");
-
         POKEDEX.add("Fearow");
         POKEDEX.add("Ekans");
         POKEDEX.add("Arbok");
         POKEDEX.add("Pikachu");
-
         POKEDEX.add("Raichu");
         POKEDEX.add("Sandshrew");
         POKEDEX.add("Sandslash");
         POKEDEX.add("Nidoran");
-
         POKEDEX.add("Nidorina");
         POKEDEX.add("Nidoqueen");
         POKEDEX.add("Nidoran");
@@ -54,7 +49,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Ninetales");
         POKEDEX.add("Jigglypuff");
         POKEDEX.add("Wigglytuff");
-
         POKEDEX.add("Zubat");
         POKEDEX.add("Golbat");
         POKEDEX.add("Oddish");
@@ -62,7 +56,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Vileplume");
         POKEDEX.add("Paras");
         POKEDEX.add("Parasect");
-
         POKEDEX.add("Venonat");
         POKEDEX.add("Venomoth");
         POKEDEX.add("Diglett");
@@ -76,7 +69,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Growlithe");
         POKEDEX.add("Arcanine");
         POKEDEX.add("Poliwag");
-
         POKEDEX.add("Poliwhirl");
         POKEDEX.add("Poliwrath");
         POKEDEX.add("Abra");
@@ -85,7 +77,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Machop");
         POKEDEX.add("Machoke");
         POKEDEX.add("Machamp");
-
         POKEDEX.add("Bellsprout");
         POKEDEX.add("Weepinbell");
         POKEDEX.add("Victreebel");
@@ -96,7 +87,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Golem");
         POKEDEX.add("Ponyta");
         POKEDEX.add("Rapidash");
-
         POKEDEX.add("Slowpoke");
         POKEDEX.add("Slowbro");
         POKEDEX.add("Magnemite");
@@ -126,7 +116,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Marowak");
         POKEDEX.add("Hitmonlee");
         POKEDEX.add("Hitmonchan");
-
         POKEDEX.add("Lickitung");
         POKEDEX.add("Koffing");
         POKEDEX.add("Weezing");
@@ -138,7 +127,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Horsea");
         POKEDEX.add("Seadra");
         POKEDEX.add("Goldeen");
-
         POKEDEX.add("Seaking");
         POKEDEX.add("Staryu");
         POKEDEX.add("Starmie");
@@ -150,7 +138,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Pinsir");
         POKEDEX.add("Tauros");
         POKEDEX.add("Magikarp");
-
         POKEDEX.add("Gyarados");
         POKEDEX.add("Lapras");
         POKEDEX.add("Ditto");
@@ -163,7 +150,6 @@ public class SpeciesToPokedex {
         POKEDEX.add("Omastar");
         POKEDEX.add("Kabuto");
         POKEDEX.add("Kabutops");
-
         POKEDEX.add("Aerodactyl");
         POKEDEX.add("Snorlax");
         POKEDEX.add("Articuno");
@@ -175,15 +161,22 @@ public class SpeciesToPokedex {
         POKEDEX.add("Mewtwo");
         POKEDEX.add("Mew");
 
-        for (int index = 0; index < POKEDEX.size(); index++) {
-            String temp = POKEDEX.get(index).toLowerCase();
-            POKEDEX.set(index, temp);
-        }
+        toLowercase(POKEDEX);
+    }
 
+    private static void toLowercase(List<String> pokemon) {
+        for (int index = 0; index < pokemon.size(); index++) {
+            String temp = pokemon.get(index).toLowerCase();
+            pokemon.set(index, temp);
+        }
     }
 
     public int getIdFor(String pokemonName) {
-        return POKEDEX.indexOf(pokemonName.toLowerCase()) + 1;
+        return POKEDEX.indexOf(pokemonName.toLowerCase()) + ZERO_INDEX_COEFF;
+    }
+
+    public boolean has(String pokemon) {
+        return POKEDEX.contains(pokemon.toLowerCase());
     }
 
 }

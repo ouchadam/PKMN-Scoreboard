@@ -1,7 +1,7 @@
 package com.ouchadam.psr.read.reader;
 
+import com.ouchadam.psr.read.Pokedex;
 import com.ouchadam.psr.read.PokemonFile;
-import com.ouchadam.psr.read.SpeciesToPokedex;
 import com.ouchadam.psr.read.domain.Pokemon;
 import com.ouchadam.psr.read.domain.Team;
 import com.ouchadam.psr.read.text.TextReader;
@@ -56,7 +56,7 @@ public class TeamReaderTest extends ReaderTestHelper {
     }
 
     private static PokemonFileReader<Team> create(TeamOffsets teamOffsets) {
-        return new TeamReader(new TextReader(), new SpeciesToPokedex(), teamOffsets);
+        return new TeamReader(new TextReader(), new Pokedex(), teamOffsets);
     }
 
     private static void assertPokemon(Pokemon pokemon, String name, int level, int species) {

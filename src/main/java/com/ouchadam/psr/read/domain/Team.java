@@ -2,7 +2,7 @@ package com.ouchadam.psr.read.domain;
 
 import java.util.List;
 
-public class Team {
+public class Team  {
 
     public final int count;
     public final List<Pokemon> pokemons;
@@ -16,4 +16,5 @@ public class Team {
     public String toString() {
         return "\n" + pokemons.toString() + "\n";
     }
+
 }

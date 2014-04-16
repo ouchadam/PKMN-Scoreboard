@@ -1,7 +1,7 @@
 package com.ouchadam.psr.read.reader;
 
+import com.ouchadam.psr.read.Pokedex;
 import com.ouchadam.psr.read.PokemonFile;
-import com.ouchadam.psr.read.SpeciesToPokedex;
 import com.ouchadam.psr.read.domain.Pokemon;
 import com.ouchadam.psr.read.domain.Team;
 import com.ouchadam.psr.read.text.TextReader;
@@ -13,12 +13,12 @@ import java.util.List;
 public class TeamReader implements PokemonFileReader<Team> {
 
     private final TextReader textReader;
-    private final SpeciesToPokedex speciesToPokedex;
+    private final Pokedex pokedex;
     private final TeamOffsets teamOffsets;
 
-    public TeamReader(TextReader textReader, SpeciesToPokedex speciesToPokedex, TeamOffsets teamOffsets) {
+    public TeamReader(TextReader textReader, Pokedex pokedex, TeamOffsets teamOffsets) {
         this.textReader = textReader;
-        this.speciesToPokedex = speciesToPokedex;
+        this.pokedex = pokedex;
         this.teamOffsets = teamOffsets;
     }
 
@@ -43,7 +43,7 @@ public class TeamReader implements PokemonFileReader<Team> {
             int maxHp = file.getTwoInt(baseStatOffset + TeamOffsets.OFFSET_STAT_MAX_HP_1, baseStatOffset + TeamOffsets.OFFSET_STAT_MAX_HP_2);
             int currentHp = file.getTwoInt(baseStatOffset + TeamOffsets.OFFSET_STAT_CURRENT_HP_1, baseStatOffset + TeamOffsets.OFFSET_STAT_CURRENT_HP_2);
             String name = pokemonNames.get(index);
-            int pokedexId = speciesToPokedex.getIdFor(name);
+            int pokedexId = pokedex.getIdFor(name);
             pokemons.add(new Pokemon(name, maxHp, currentHp, level, species, pokedexId, type));
         }
         return pokemons;

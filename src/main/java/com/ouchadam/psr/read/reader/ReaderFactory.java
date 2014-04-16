@@ -1,7 +1,7 @@
 package com.ouchadam.psr.read.reader;
 
+import com.ouchadam.psr.read.Pokedex;
 import com.ouchadam.psr.read.PokemonFile;
-import com.ouchadam.psr.read.SpeciesToPokedex;
 import com.ouchadam.psr.read.domain.Money;
 import com.ouchadam.psr.read.domain.PlayerName;
 import com.ouchadam.psr.read.domain.Playtime;
@@ -11,13 +11,13 @@ import com.ouchadam.psr.read.text.TextReader;
 public class ReaderFactory {
 
     private final TextReader textReader;
-    private final SpeciesToPokedex speciesToPokedex;
+    private final Pokedex pokedex;
 
     private int offset;
 
-    public ReaderFactory(TextReader textReader, SpeciesToPokedex speciesToPokedex) {
+    public ReaderFactory(TextReader textReader, Pokedex pokedex) {
         this.textReader = textReader;
-        this.speciesToPokedex = speciesToPokedex;
+        this.pokedex = pokedex;
         this.offset = 0;
     }
 
@@ -51,7 +51,7 @@ public class ReaderFactory {
 
         @Override
         public PokemonFileReader<Team> playerTeam() {
-            return new TeamReader(textReader, speciesToPokedex, new TeamOffsets(Offsets.SAV_TEAM));
+            return new TeamReader(textReader, pokedex, new TeamOffsets(Offsets.SAV_TEAM));
         }
 
         @Override
@@ -79,7 +79,7 @@ public class ReaderFactory {
 
         @Override
         public PokemonFileReader<Team> playerTeam() {
-            return new TeamReader(textReader, speciesToPokedex, new TeamOffsets(Offsets.STATE_TEAM - offset));
+            return new TeamReader(textReader, pokedex, new TeamOffsets(Offsets.STATE_TEAM - offset));
         }
 
         @Override

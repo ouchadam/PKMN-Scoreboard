@@ -60,4 +60,5 @@ public class Pokemon {
                 ", type=" + type +
                 '}';
     }
+
 }
